@@ -10,7 +10,7 @@ import Dashboard from './dashboard';
 import { createContext, useState } from 'react';
  let Context=createContext();
 function App() {
-  let url='http://localhost:8000';
+  let url='https://backend-chat-kzg0.onrender.com';
 let [Uname,setUname]=useState('hello');
 return(
   <>
