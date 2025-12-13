@@ -35,8 +35,8 @@ if(token.message){
 }
 else{
   console.log(token.name)
-   setUname(token.name);
 localStorage.setItem("token",token.token);
+localStorage.setItem("name",token.name)
 let gettoken=localStorage.getItem("token");
 if(gettoken){
   navigate('/dashboard')

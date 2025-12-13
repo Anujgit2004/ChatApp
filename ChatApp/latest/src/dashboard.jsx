@@ -4,11 +4,8 @@ import {io} from 'socket.io-client';
 import './App.css'
 import { Context } from './App';
 export default function Dashboard() {
-
-
-
- let{name,setUname,URL}= useContext(Context)
-
+ let{URL}= useContext(Context)
+let name=localStorage.getItem("name");
 //  const socket=io(URL);
     let [users,setusers]=useState([]);
     let [active,setactive]=useState(true);
@@ -48,7 +45,7 @@ setusers(getuserdata);
 setactive(false)
 let getallmessage=await fetch(`${URL}/auth/${getid}`);
 let final=await getallmessage.json();
-    setmessage( final)
+setmessage( final)
 setactive(true)
 // socket.emit('join room',getid);
 }
@@ -186,6 +183,7 @@ let iterate= getmessage.map((v,i)=>{
     <>
     <div className="upperpart">
     <h1 style={{margin:'0px',color:'rgba(80, 213, 3, 0.88)',}}>ChatApp</h1>
+    <h1>{name}</h1>
      <button onClick={handlelogout} style={{padding:'10px',borderRadius:'10px',border:'none',marginBottom:'5px',backgroundColor:'red',color:'white'}}>Logout</button>
     </div>
     <div className="chatui">
