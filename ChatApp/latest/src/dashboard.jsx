@@ -42,6 +42,7 @@ setusers(getuserdata);
 
 
  async function fetchs(){
+ setmessage(" ")
 setactive(false)
 let getallmessage=await fetch(`${URL}/auth/${getid}`);
 let final=await getallmessage.json();
