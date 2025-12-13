@@ -11,6 +11,7 @@ export default function Dashboard() {
 
 //  const socket=io(URL);
     let [users,setusers]=useState([]);
+    let [active,setactive]=useState(true);
     let [Susers,setsusers]=useState([]);
     let [getid,setid]=useState(0);
     let[getmessage,setmessage]=useState([]);
@@ -23,7 +24,7 @@ export default function Dashboard() {
     })
 
     
-console.log(getid)
+
    let navigate= useNavigate();
   useEffect(()=>{
      let gettoken=localStorage.getItem("token");
@@ -44,16 +45,19 @@ setusers(getuserdata);
 
 
  async function fetchs(){
+setactive(false)
 let getallmessage=await fetch(`${URL}/auth/${getid}`);
 let final=await getallmessage.json();
-console.log(final)
-setmessage(await final)
+    setmessage( final)
+setactive(true)
 // socket.emit('join room',getid);
 }
 
 useEffect(()=>{
  
- fetchs();
+    fetchs();
+  
+ 
 // socket.on('new recieved',(newmsg)=>{
 //   console.log(newmsg)
 // })
@@ -123,7 +127,7 @@ navigate('/login')
 }
 
  
-
+console.log(getmessage)
 
 let color={
 color:'white',
@@ -161,6 +165,22 @@ borderRadius:'10px'
 let nousercolor={
 width:'80%'
 }
+
+
+let iterate= getmessage.map((v,i)=>{
+  return(
+    <div key={i} style={(getid==v.RecieverId)?color:nocolor}>
+ <p style={{margin:'0px'}}>{v.message}</p>
+ <div className="messagetime">
+ <p style={{margin:'0px'}}>{new Date(v.createdAt).toLocaleDateString('en-IN')}</p>
+ <p style={{margin:'0px'}}>{new Date(v.createdAt).toLocaleTimeString('en-IN')}</p>
+ </div>
+
+    </div> 
+  )
+})
+
+
 
   return (
     <>
@@ -202,21 +222,12 @@ width:'80%'
       <div className="navbar">
         <p>{uname}</p>
       </div>
-      <div className='chatarea'>      
-{(getmessage.length!=0)?getmessage.map((v,i)=>{
-  return(
-    <div key={i} style={(getid==v.RecieverId)?color:nocolor}>
- <p style={{margin:'0px'}}>{v.message}</p>
- <div className="messagetime">
- <p style={{margin:'0px'}}>{new Date(v.createdAt).toLocaleDateString('en-IN')}</p>
- <p style={{margin:'0px'}}>{new Date(v.createdAt).toLocaleTimeString('en-IN')}</p>
- </div>
+      <div className='chatarea'>   
+        {       
+(getmessage.length!=0&&active)?iterate:
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#44061D"></stop><stop offset=".3" stop-color="#44061D" stop-opacity=".9"></stop><stop offset=".6" stop-color="#44061D" stop-opacity=".6"></stop><stop offset=".8" stop-color="#44061D" stop-opacity=".3"></stop><stop offset="1" stop-color="#44061D" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" stroke-width="13" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#44061D" stroke-width="13" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
+        }   
 
-    </div> 
-  )
-}):
-<p style={{textAlign:'center',fontSize:'20px'}}>No Messages</p>
-}
       </div>
       <div className='send'>
       <form onSubmit={handleSubmit} className='messageblock'>
