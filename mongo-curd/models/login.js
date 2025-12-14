@@ -4,7 +4,6 @@ const { Message } = require("./MessageSchema");
 const Userdata = require("./user");
 const bcrypt=require("bcrypt");
 let mongoose=require("mongoose");
-
 let getuser=null;
 let getchaterid=null;
 //login api
@@ -21,7 +20,9 @@ if(!isavailable){
  res.json({message:"Not valid Password"}) ;
 }
 let token=Generatetoken(existinguser)
-await res.json({token:token,name:existinguser.name})
+await res.json({token:token,name:existinguser})
+
+console.log(getuser)
 }
 
 //signup api
@@ -42,15 +43,16 @@ const finaluser=new Userdata({
 })
 finaluser.save().then(async ()=>{
  let token=Generatetoken(finaluser)
- res.json({token:token,name:name});
  getuser= await Userdata.findOne({email})
+ res.json({token:token,name:getuser});
+ 
 })
 }
     }
     catch(err){
 console.log(err)
     }
-
+console.log(getuser)
 }
 
 
@@ -64,6 +66,7 @@ let getalluser=await Userdata.find({
 if(getalluser.length==0){
     return res.send("not found")
 }
+console.log(getuser)
 res.send(getalluser);
 }
 
@@ -85,6 +88,7 @@ let getid=getchatters.map((v)=>{
 
  let chattersdata=await Userdata.find({_id:{$in:getid}}).select("-password").select("-email")
  res.send(chattersdata)
+ console.log(getuser)
     }
   catch(er){
 res.send(er)
@@ -95,8 +99,9 @@ res.send(er)
 //SendMessage api
 const sendMessage=async(req,res)=>{
 let {message}=req.body;
-let SenderId=getuser._id;
-let {id:RecieverId}=req.params;
+ let query= req.params  
+let RecieverId=query.id;
+let SenderId=query.ids;
 let chat= await Convers.findOne({
     participants:{$all:[SenderId,RecieverId]}
 });
@@ -118,21 +123,21 @@ if(Chatmessage){
 await chat.messages.push(Chatmessage._id);
 }
 await chat.save();
-await Chatmessage.save();
-console.log("saved")
+await Chatmessage.save().then(()=>console.log(Chatmessage));
+console.log(getuser)
 }
 
 
 //Recieve api
 const recieveMessage=async(req,res)=>{
     console.log("sidhu");
-    try {   
-      let {id:RecieverId}=req.params;
-let SenderId=getuser._id;
+    try { 
+         let query= req.params  
+      let RecieverId=query.id;
+let SenderId=query.ids;
 let getmessages=await Convers.findOne({
    participants:{$all:[RecieverId,SenderId]}
 }).populate("messages")
-console.log(getmessages)
 res.send(getmessages.messages);  
     }
      catch (error) {

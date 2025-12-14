@@ -34,9 +34,9 @@ if(token.message){
   alert("Invalid Credentials")
 }
 else{
-  console.log(token.name)
+  setUname(token.name.name)
 localStorage.setItem("token",token.token);
-localStorage.setItem("name",token.name)
+localStorage.setItem("name",token.name._id)
 let gettoken=localStorage.getItem("token");
 if(gettoken){
   navigate('/dashboard')

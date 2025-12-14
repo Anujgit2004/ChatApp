@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Context } from './App';
 
 export default function Form() {
-  let {URL}= useContext(Context)
+  let {URL,setUname}= useContext(Context)
   let navigate=useNavigate();
   let[param,setparam]=useState();
     let [fdata,setfdata]=useState({
@@ -38,7 +38,9 @@ if(token.message){
   alert("Invalid Credentials")
 }
 else{
+ setUname(token.name.name)
 localStorage.setItem("token",token.token);
+localStorage.setItem("name",token.name._id)
 let gettoken=localStorage.getItem("token");
 if(gettoken){
 navigate('/dashboard')

@@ -4,8 +4,10 @@ import {io} from 'socket.io-client';
 import './App.css'
 import { Context } from './App';
 export default function Dashboard() {
- let{URL}= useContext(Context)
-let name=localStorage.getItem("name");
+ let{URL,name}= useContext(Context)
+let senderid=localStorage.getItem("name");
+
+
 //  const socket=io(URL);
     let [users,setusers]=useState([]);
     let [active,setactive]=useState(true);
@@ -43,7 +45,8 @@ setusers(getuserdata);
 
  async function fetchs(){
 setactive(false)
-let getallmessage=await fetch(`${URL}/auth/${getid}`);
+setmessage('');
+let getallmessage= await fetch(`${URL}/auth/${getid}/${senderid}`);
 let final=await getallmessage.json();
 setmessage( final)
 setactive(true)
@@ -62,19 +65,22 @@ useEffect(()=>{
 //HANDLE ONSUBMIT
 const handleSubmit=async(e)=>{
 e.preventDefault();
-let sendMessage=await fetch(`${URL}/auth/send/${getid}`,{
+await fetch(`${URL}/auth/send/${getid}/${senderid}`,{
   method:"POST",
   headers:{
     "Content-Type":"application/json"
   },
   body:JSON.stringify(datas)
+}).then(()=>{
+  setTimeout(() => {
+    fetch(`${URL}/auth/${getid}/${senderid}`).then((res)=>res.json()).then((final)=>{setmessage( final),console.log(final)});
+  }, 1000);
+
 })
-console.log(getid)
-await fetchs();
+console.log(senderid)
 setdatas({
    message:''
 })
-
 
 
 // let facts=await sendMessage.json();
@@ -120,11 +126,10 @@ setsname({
 //lOGOUT
   const handlelogout=()=>{
 localStorage.removeItem("token");
+localStorage.removeItem("name");
 navigate('/login')
 }
 
- 
-console.log(getmessage)
 
 let color={
 color:'white',
@@ -164,18 +169,7 @@ width:'80%'
 }
 
 
-let iterate= getmessage.map((v,i)=>{
-  return(
-    <div key={i} style={(getid==v.RecieverId)?color:nocolor}>
- <p style={{margin:'0px'}}>{v.message}</p>
- <div className="messagetime">
- <p style={{margin:'0px'}}>{new Date(v.createdAt).toLocaleDateString('en-IN')}</p>
- <p style={{margin:'0px'}}>{new Date(v.createdAt).toLocaleTimeString('en-IN')}</p>
- </div>
 
-    </div> 
-  )
-})
 
 
 
@@ -222,8 +216,18 @@ let iterate= getmessage.map((v,i)=>{
       </div>
       <div className='chatarea'>   
         {       
-(getmessage.length!=0&&active)?iterate:
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#44061D"></stop><stop offset=".3" stop-color="#44061D" stop-opacity=".9"></stop><stop offset=".6" stop-color="#44061D" stop-opacity=".6"></stop><stop offset=".8" stop-color="#44061D" stop-opacity=".3"></stop><stop offset="1" stop-color="#44061D" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" stroke-width="13" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#44061D" stroke-width="13" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
+(getmessage.length!=0&&active)?getmessage.map((v,i)=>{
+  return(
+    <div key={i} style={(getid==v.RecieverId)?color:nocolor}>
+ <p style={{margin:'0px'}}>{v.message}</p>
+ <div className="messagetime">
+ <p style={{margin:'0px'}}>{new Date(v.createdAt).toLocaleDateString('en-IN')}</p>
+ <p style={{margin:'0px'}}>{new Date(v.createdAt).toLocaleTimeString('en-IN')}</p>
+ </div>
+
+    </div> 
+  )
+}):<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#44061D"></stop><stop offset=".3" stop-color="#44061D" stop-opacity=".9"></stop><stop offset=".6" stop-color="#44061D" stop-opacity=".6"></stop><stop offset=".8" stop-color="#44061D" stop-opacity=".3"></stop><stop offset="1" stop-color="#44061D" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" stroke-width="13" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#44061D" stroke-width="13" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
         }   
 
       </div>
