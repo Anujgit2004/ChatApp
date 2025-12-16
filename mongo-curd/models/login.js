@@ -29,7 +29,7 @@ console.log(getuser)
 const createuser=async(req,res)=>{
      try{
 let {name,email,password}=req.body;
-let getdata=await Userdata.findOne({email})
+let getdata=await Userdata.findOne({email}) 
 if(getdata?.email==email){
  res.json({message:"Registerd UnSuccessful"})
 }

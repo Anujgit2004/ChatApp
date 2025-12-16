@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {io} from 'socket.io-client';
 import './App.css'
 import { Context } from './App';
+import chatlogo from './assets/icons8-chat-64.png'
 export default function Dashboard() {
  let{URL,name}= useContext(Context)
 let senderid=localStorage.getItem("name");
@@ -159,10 +160,7 @@ gap:'5px'
 }
 
 let usercolor={
-width:'80%',
-backgroundColor:'black' ,
-padding:'5px',
-borderRadius:'10px'
+width:'80%'
 }
 let nousercolor={
 width:'80%'
@@ -175,24 +173,26 @@ width:'80%'
 
   return (
     <>
-    <div className="upperpart">
-    <h1 style={{margin:'0px',color:'rgba(80, 213, 3, 0.88)',}}>ChatApp</h1>
-    <h1>{name}</h1>
-     <button onClick={handlelogout} style={{padding:'10px',borderRadius:'10px',border:'none',marginBottom:'5px',backgroundColor:'red',color:'white'}}>Logout</button>
-    </div>
-    <div className="chatui">
-<div className='leftone'>
-
- <form onSubmit={handleSearch} className='searchbar'>
-        <input className='searchinput'  type="text" name='name' value={Sname.name} onChange={handlename}/>
-        <input className='searchbtn' type="Submit" value={'Search'}/>
+    <div className='flex flex-col h-screen bg-gradient-to-r from-blue-100 to-cyan-100 justify-around p-2'>
+       <nav className='navbars w-full flex items-center justify-between rounded-xl px-2 bg-gradient-to-r from-emerald-400 to-cyan-400'>
+      <img src={chatlogo}/>
+      <h1 className='text-3xl font-bold text-emerald-600'>{name}</h1>
+        <div className="button flex gap-3 items-center">
+   <button onClick={handlelogout} className='cursor-pointer text-xl px-3 py-1 rounded-xl bg-red-500 text-white'>Logout</button>
+    </div> 
+    </nav>
+    <div className="chatui flex w-full justify-around">
+<div className='leftone bg-gradient-to-r from-teal-400 to-yellow-200'>
+ <form onSubmit={handleSearch} className='searchbar w-5/6 flex justify-center gap-2'>
+        <input className='searchinput border-2 border-black w-4/6 p-2 rounded-xl' placeholder='Enter Name...' type="text" name='name' value={Sname.name} onChange={handlename}/>
+        <input className='searchbtn w-2/6 rounded-xl bg-black text-white cursor-pointer' type="Submit" value={'Search'}/>
       </form>
      {(Susers.length==0)?
     <div className='userlist'>
   {users.map((v,i)=>{
       return(
         <div key={i} style={(getid==v._id?usercolor:nousercolor)}>
-          <p style={{color:'white',fontSize:'25px',cursor:'pointer',margin:'0px'}} onClick={()=>{setid(v._id),setuname(v.name)}}>{v.name}</p>
+          <p className='cursor-pointer text-black text-2xl hover:w-3/6 hover:bg-black hover:text-white hover:px-2 hover:py-1 rounded-xl font-medium' onClick={()=>{setid(v._id),setuname(v.name)}}>{v.name}</p>
         </div>
       )
     })}
@@ -210,11 +210,11 @@ width:'80%'
      }
    
     </div>
-    <div className="rightone">
-      <div className="navbar">
-        <p>{uname}</p>
+    <div className="rightone bg-gradient-to-r from-emerald-500 to-emerald-900">
+      <div className="bg-white text-black rounded-xl p-2 text-center ">
+        <p className='text-2xl font-medium'>{uname}</p>
       </div>
-      <div className='chatarea'>   
+      <div className='chatarea bg-green-300'>   
         {       
 (getmessage.length!=0&&active)?getmessage.map((v,i)=>{
   return(
@@ -231,14 +231,16 @@ width:'80%'
         }   
 
       </div>
-      <div className='send'>
-      <form onSubmit={handleSubmit} className='messageblock'>
-        <input className='textarea' type="text" name='message' value={datas.message} onChange={handleInput}/>
-        <input className='sendbtn' type="Submit" value={'Send'}/>
+      <div className='send flex justify-center'>
+      <form onSubmit={handleSubmit} className='w-5/6 flex gap-2'>
+        <input className='border-2 border-black w-5/6 p-1 rounded-xl' type="text" placeholder='Enter message...' name='message' value={datas.message} onChange={handleInput}/>
+        <input className='w-1/6 text-2xl border-black rounded-xl bg-black text-white cursor-pointer' type="Submit" value={'Send'}/>
       </form>
       </div>
     </div>
     </div>
+    </div>
+   
     
     </>
   )

@@ -1,7 +1,7 @@
 
 import './App.css'
 import FormField from './FormField';
-
+import './index.css'
 import Form from './Form';
 import Translate from './translate';
 import { Route, Router, Routes } from 'react-router-dom';
