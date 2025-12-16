@@ -45,14 +45,14 @@ finaluser.save().then(async ()=>{
  let token=Generatetoken(finaluser)
  getuser= await Userdata.findOne({email})
  res.json({token:token,name:getuser});
- 
+ console.log(getuser)
 })
 }
     }
     catch(err){
 console.log(err)
     }
-console.log(getuser)
+
 }
 
 
@@ -130,7 +130,7 @@ console.log(getuser)
 
 //Recieve api
 const recieveMessage=async(req,res)=>{
-    console.log("sidhu");
+    
     try { 
          let query= req.params  
       let RecieverId=query.id;
@@ -141,8 +141,8 @@ let getmessages=await Convers.findOne({
 res.send(getmessages.messages);  
     }
      catch (error) {
-    //    res.json([])
-    console.log(error)
+       res.json([])
+   
     }
 
 }

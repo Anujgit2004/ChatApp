@@ -23,8 +23,6 @@ let senderid=localStorage.getItem("name");
       name:''
     })
 
-    
-
    let navigate= useNavigate();
   useEffect(()=>{
      let gettoken=localStorage.getItem("token");
@@ -42,7 +40,13 @@ setusers(getuserdata);
   }
     },[])
 
-
+useEffect(()=>{
+ 
+    fetchs();
+// socket.on('new recieved',(newmsg)=>{
+//   console.log(newmsg)
+// })
+},[getid])
 
  async function fetchs(){
 setactive(false)
@@ -54,15 +58,7 @@ setactive(true)
 // socket.emit('join room',getid);
 }
 
-useEffect(()=>{
- 
-    fetchs();
-  
- 
-// socket.on('new recieved',(newmsg)=>{
-//   console.log(newmsg)
-// })
-},[getid])
+
 //HANDLE ONSUBMIT
 const handleSubmit=async(e)=>{
 e.preventDefault();
@@ -73,12 +69,14 @@ await fetch(`${URL}/auth/send/${getid}/${senderid}`,{
   },
   body:JSON.stringify(datas)
 }).then(()=>{
+  setmessage('');
   setTimeout(() => {
-    fetch(`${URL}/auth/${getid}/${senderid}`).then((res)=>res.json()).then((final)=>{setmessage( final),console.log(final)});
-  }, 1000);
+  fetch(`${URL}/auth/${getid}/${senderid}`).then((res)=>res.json()).then((final)=>setmessage( final));
+  }, 200);
 
 })
 console.log(senderid)
+
 setdatas({
    message:''
 })
