@@ -32,7 +32,6 @@ padding: 20px;
 border-radius: 20px;
 }
 .chatarea{
-flex-basis: 1;
 display: flex;
 overflow: auto;
 height: 400px;
