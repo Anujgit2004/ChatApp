@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import chatlogo from './assets/icons8-chat-64.png'
 export default function Login() {
    let{setUname,URL}= useContext(Context)
+   let [active,setactive]=useState(true)
     let [data,setdata]=useState({
         email:"",
         password:""
@@ -22,7 +23,9 @@ setdata(udata);
 const handleSubmit=async(e)=>{
     console.log(data)
 e.preventDefault();
-let response=await fetch(`${URL}/auth/login`,{
+setactive(false)
+setTimeout(async() => {
+  let response=await fetch(`${URL}/auth/login`,{
     method:"POST",
     headers:{
         "Content-Type":"application/json"
@@ -46,7 +49,10 @@ else{
  console.log("wrong credentials")
 }
 }
+}, 3000);
 
+
+console.log(active)
 }
   return (
     <>
@@ -57,7 +63,7 @@ else{
  <form onSubmit={handleSubmit} className='w-2xl flex flex-col items-center gap-6 p-5 rounded-2xl'>
   <input className='border-2 w-3/6 p-1 rounded-xl text-xl' type="email" name='email' placeholder='Email' value={data.email} onChange={handlefield}/>
   <input className='border-2 w-3/6 p-1 rounded-xl text-xl' type="text" name='password' placeholder='Password' value={data.password} onChange={handlefield}/>
-<input className='cursor-pointer border-2 w-1/6 p-1 rounded-xl hover:bg-black hover:text-white hover:border-0' type="submit" value={"Submit"}/>
+<input className='cursor-pointer border-2 w-1/6 p-1 rounded-xl hover:bg-black hover:text-white hover:border-0' type="submit" value={active?"Submit":"Loading..."}/>
       </form>
 <div className="signup-info flex p-2 gap-2 items-center">
   <p className='text-xl'>Don't have account</p>

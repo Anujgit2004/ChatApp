@@ -1,11 +1,9 @@
-let express=require("express");
+let express= require("express");
 let mongoose=require("mongoose");
 const route = require("./router");
  let dot= require("dotenv")
  dot.config();
 const Adminaccess = require("./admin");
-let {Server} =require("socket.io");
-let {createServer}=require("http");
 let cors=require("cors");
 let app=express();
 let frontendurl="http://localhost:5173"
@@ -13,8 +11,8 @@ app.use(cors({
   origin:frontendurl,
   methods:['GET','POST']
 }));
-app.use(express.json());
-let server=createServer(app)
+app.use(express.json()); 
+
 // const io=new Server(server,{
 //     cors:{
 //         origin:'http://localhost:5173',
@@ -56,4 +54,29 @@ app.get('/',(req,res)=>{
 Adminaccess();
 app.use("/user",route);
 app.use("/auth",route)
-app.listen(8000);
+ app.listen(8000);
+
+//  const io=require('socket.io')(server,{
+//   cors:{
+//     origin:frontendurl
+//   }
+// });
+
+
+
+
+// io.on('connection',(socket)=>{
+//   console.log('connected to socket.io');
+
+//   socket.on('setup',(userData)=>{
+//     socket.join(userData);
+//     console.log(userData);
+//     console.log('connected');
+//   })
+
+//     socket.on('join chat',(room)=>{
+//     socket.join(room);
+//     console.log('user joined '+room);
+   
+//   })
+// })

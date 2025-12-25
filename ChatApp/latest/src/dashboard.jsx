@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import {io} from 'socket.io-client';
+
+
 import './App.css'
 import { Context } from './App';
 import chatlogo from './assets/icons8-chat-64.png'
@@ -27,10 +28,13 @@ let senderid=localStorage.getItem("name");
   useEffect(()=>{
      let gettoken=localStorage.getItem("token");
     async function fetchs(){
+     
   let data=await fetch(`${URL}/auth/chatters`);
 let getuserdata=await data.json();
 setusers(getuserdata);
+
      }
+
 
      if(gettoken){
  fetchs();
@@ -55,8 +59,16 @@ let getallmessage= await fetch(`${URL}/auth/${getid}/${senderid}`);
 let final=await getallmessage.json();
 setmessage( final)
 setactive(true)
+
 // socket.emit('join room',getid);
 }
+
+
+// useEffect(()=>{
+//   socket.on('new message',(message)=>{
+//     setmessage(...getmessage,message)
+//   })
+// },[socket])
 
 
 //HANDLE ONSUBMIT
@@ -86,7 +98,6 @@ setdatas({
 // socket.emit('new message',facts)
 
 }
-
 
 
 
