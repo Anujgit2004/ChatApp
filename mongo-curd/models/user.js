@@ -13,6 +13,10 @@ password:{
     type:String,
     required:true, 
 },
+profile:{
+    type:String,
+  default:''
+},
 role:{
  type:String,
 required:true, 

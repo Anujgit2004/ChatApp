@@ -1,6 +1,6 @@
 let express=require("express");
 
-const {userlogin, getprint,createuser, sendMessage, recieveMessage, currentchatters} = require("./login");
+const {userlogin, getprint,createuser,sendMessage, recieveMessage, currentchatters} = require("./login");
 
 let route=express.Router();
 route.post("/register",createuser);

@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import img from "./assets/icons8-exchange-96.png";
 import { Link, useNavigate } from 'react-router-dom';
 import chatlogo from './assets/icons8-chat-64.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars, faHamburger, faX } from '@fortawesome/free-solid-svg-icons';
 export default function Translate() {
 
   //  let navigate=  useNavigate();
@@ -58,25 +60,37 @@ export default function Translate() {
     
   // }
 
-
+const [show,setshow]=useState(true)
 
   return (
     <>
-    <div className="main w-full flex flex-col items-center p-2 h-screen border justify-between">
- <nav className='navbars w-full flex items-center justify-between rounded-xl px-2 bg-gradient-to-r from-violet-300 to-pink-300'>
+    <div className="main w-full flex flex-col items-center p-2 h-screen justify-between">
+      <div className="upppart flex flex-col relative w-full items-end gap-2">
+         <nav className='navbars w-full flex items-center justify-between rounded-xl px-2 bg-gradient-to-r from-violet-300 to-pink-300'>
       <img src={chatlogo}/>
       <h1 className='text-3xl font-bold text-emerald-600'>ChatApp...</h1>
-        <div className="button flex gap-3 items-center">
+        <div className="button flex gap-3 items-center max-sm:hidden">
      <Link to={'/login'}> <button className='cursor-pointer text-xl px-3 py-1 rounded-xl bg-orange-500 text-white'>Login</button></Link>
      <Link to={'/Signup'}> <button className='cursor-pointer text-xl px-3 py-1 rounded-xl bg-purple-500 text-white'>Signup</button></Link> 
+   
     </div> 
+     <FontAwesomeIcon className='text-2xl hamburger' onClick={()=>setshow(!show)} icon={(show)?faBars:faX}></FontAwesomeIcon>
     </nav>
-    
-   <div className=' w-3/6'>
-    <h1 className='text-8xl text-center font-medium'>Welcome To <span className='text-green-500'>ChatApp...</span></h1>
+    <div className={`w-2/6 bg-yellow-100 p-4 rounded-xl absolute z-99 top-18  ${(show)?'hidden':''}`}>
+       <div className="button flex flex-col gap-3 items-center">
+     <Link to={'/login'}> <button className='cursor-pointer text-xl px-4 py-1 rounded-xl bg-orange-500 text-white'>Login</button></Link>
+     <Link to={'/Signup'}> <button className='cursor-pointer text-xl px-3 py-1 rounded-xl bg-purple-500 text-white'>Signup</button></Link> 
+   
+    </div> 
+    </div>
+      </div>
+
+
+   <div className='center w-3/6 max-md:w-4/6 max-sm:w-5/6'>
+    <h1 className='text-8xl max-xl:text-7xl max-lg:text-6xl max-sm:text-5xl text-center font-medium'>Welcome To <span className='text-green-500'>ChatApp...</span></h1>
    </div>
 
-<div className='w-3/6 border-2 border-red-400 flex flex-col gap-4 p-3 items-center rounded-xl text-4xl mb-5'>
+<div className='introbox w-3/6 border-2 border-red-400 flex flex-col gap-4 p-3 items-center rounded-xl text-4xl max-xl:text-3xl max-md:text-2xl max-sm:text-lg max-sm:font-medium  mb-5'>
   <p>“Say hi 👋 — someone’s waiting to chat”</p>
   <p>“Your next conversation starts here”</p>
   <p>“Good chats start with one message”</p>

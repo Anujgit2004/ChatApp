@@ -14,7 +14,7 @@ function App() {
 let [Uname,setUname]=useState('hello');
 return(
   <>
-  <Context.Provider value={{URL:url,name:Uname,setUname:setUname}}>
+  <Context.Provider value={{url:url,name:Uname,setUname:setUname}}>
  <Routes>
   <Route path='' element={<Translate></Translate>}></Route>
   <Route path='/login' element={<Login></Login>}></Route>

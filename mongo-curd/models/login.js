@@ -2,11 +2,18 @@
 const { Convers } = require("./Conversation");
 const Generatetoken = require("./generatetoken");
 const { Message } = require("./MessageSchema");
+const cloudinary=require('cloudinary').v2
 const Userdata = require("./user");
 const bcrypt=require("bcrypt");
 let mongoose=require("mongoose");
 let getuser=null;
 let getchaterid=null;
+
+cloudinary.config({
+    cloud_name:'djtsu2jz8',
+    api_key:'522185749274895',
+    api_secret:'R_c4X53uBSlTyE4ELktLOJgv98Q'
+})
 //login api
 const userlogin=async(req,res)=>{
 console.log(req)
@@ -30,6 +37,9 @@ console.log(getuser)
 const createuser=async(req,res)=>{
      try{
 let {name,email,password}=req.body;
+
+
+
 let getdata=await Userdata.findOne({email}) 
 if(getdata?.email==email){
  res.json({message:"Registerd UnSuccessful"})
@@ -37,9 +47,10 @@ if(getdata?.email==email){
 else{
 let hashpass=await bcrypt.hash(password,10);
 const finaluser=new Userdata({
-    name:name,
-    email:email,
+    name,
+    email,
     password:hashpass,
+
     role:"customer"
 })
 finaluser.save().then(async ()=>{
@@ -85,7 +96,7 @@ if(!getchatters||getchatters.length==0){
 let getid=getchatters.map((v)=>{
    let party= v.participants.filter(id=>id.toString()!==getuser._id.toString());
    return [...party]
-});
+})
 
  let chattersdata=await Userdata.find({_id:{$in:getid}}).select("-password").select("-email")
  res.send(chattersdata)
@@ -97,9 +108,10 @@ res.send(er)
 
 }
 
-//SendMessage api
+// SendMessage api
 const sendMessage=async(req,res)=>{
 let {message}=req.body;
+console.log(req)
  let query= req.params  
 let RecieverId=query.id;
 let SenderId=query.ids;
@@ -149,4 +161,4 @@ res.send(getmessages.messages);
 
 }
 
-module.exports={userlogin,createuser,getprint,sendMessage,recieveMessage,currentchatters};
+module.exports={userlogin,createuser,getprint,recieveMessage,currentchatters,sendMessage};

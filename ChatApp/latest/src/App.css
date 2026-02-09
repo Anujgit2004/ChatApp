@@ -4,15 +4,10 @@
     display: flex;
     justify-content: space-between;
 }
-
-.leftone{
-    width: 30%;
-    border-radius: 20px;
-    padding-top: 15px;  
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+.hamburger{
+    display: none;
 }
+
 
 .userlist{
     margin-top: 10px;
@@ -23,24 +18,8 @@
     align-items: center;
      align-self: self-start;
 }
-.rightone{
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-   gap: 2rem;
-padding: 20px;
-border-radius: 20px;
-}
-.chatarea{
-flex-basis: 1;
-display: flex;
-overflow: auto;
-height: 400px;
-flex-direction: column;
-border-radius: 10px;
-gap: 1rem;
-padding: 5px;
-}
+
+
 .messagetime{
     display: flex;
     gap: 10px;
@@ -52,4 +31,35 @@ padding: 5px;
     gap: 10px;
 }
 
+@media (max-width:1380px) {
+    .introbox{
+       width: 60%;
+    }
+}
 
+@media (max-width:980px) {
+    .introbox{
+       width: 80%;
+    }
+}
+@media (max-width:640px) {
+    .hamburger{
+        display: block;
+    }
+}
+@media (max-width:520px) {
+  .introbox{
+       width: 100%;
+    }   
+}
+@media (max-width:380px) {
+   .introbox{
+       font-size: 15px;
+    }  
+    .navbars h1{
+        display:none;
+    }
+    .center h1{
+        font-size: 2.5rem;
+    }
+}

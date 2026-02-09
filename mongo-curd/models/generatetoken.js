@@ -1,5 +1,5 @@
 let jwt=require("jsonwebtoken");
-let secretkey="bholupandit"
+let secretkey="jwt1234"
 function Generatetoken(existinguser){
     let payload={
         id:existinguser._id,
