@@ -11,7 +11,7 @@ let cors=require("cors");
 const { Message } = require("./MessageSchema");
 const { Convers } = require("./Conversation");
 let app=express();
-let frontendurl="http://localhost:5173"
+let frontendurl="https://chatapp-frontend-nv7c.onrender.com"
 app.use(cors({
   origin:frontendurl,
   methods:['GET','POST']
