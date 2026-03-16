@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { data, useNavigate } from 'react-router-dom';
 import {io} from 'socket.io-client';
-
-
+ const socket=io("https://backend-chat-kzg0.onrender.com");
 import './App.css'
 import { Context } from './App';
 import chatlogo from './assets/icons8-chat-64.png'
@@ -10,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faTrash } from '@fortawesome/free-solid-svg-icons';
 export default function Dashboard() {
  let{url,name}= useContext(Context)
- const socket=io(url);
+
 let senderid=localStorage.getItem("name");
 
 
