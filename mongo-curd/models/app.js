@@ -12,7 +12,7 @@ const { Message } = require("./MessageSchema");
 const { Convers } = require("./Conversation");
 const fileUpload = require("express-fileupload");
 let app=express();
-let frontendurl="https://chatapp-frontend-nv7c.onrender.com"
+let frontendurl="https://chatapp-frontend-nv7c.onrender.com/"
 app.use(cors({
   origin:frontendurl,
   methods:['GET','POST']
