@@ -73,11 +73,10 @@ setusers(getuserdata);
   else{
     navigate('/login')
   }
-  console.log(senderid)
+
     },[])
 
-console.log(users)
-console.log(Susers)
+
 
 const lastmsgref=useRef();
    let navigate= useNavigate();
@@ -89,7 +88,6 @@ setchat('');
 let getallmessage= await fetch(`${url}/auth/${getid}/${senderid}`);
 let final=await getallmessage.json();
 let finalchat=final.filter((v,i)=>!v.deletedFor.includes(senderid))
-console.log(finalchat)
 setchat( finalchat)
 setactive(true)
 }
@@ -154,7 +152,6 @@ const handleDelete=async(ids)=>{
 
 socket.emit("Delete",{senderid,ids,getid});
 socket.on("loadmessage",(getmsg)=>{
-  console.log(getmsg)
 setchat(getmsg)
 })
 }
@@ -207,7 +204,7 @@ localStorage.removeItem("name");
  }
 }
 
-console.log(chat)
+
   return (
     <>
     <div style={{}}  className='flex  gap-10 flex-col bg-gradient-to-r from-blue-100 to-cyan-100 justify-around max-sm:justify-start max-sm:gap-8 p-2'>
