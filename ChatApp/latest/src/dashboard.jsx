@@ -251,7 +251,7 @@ console.log(chat)
     </div>
     <div className={`rightone w-3/6 max-lg:w-4/6 max-sm:w-full  max-sm:h-[700px] h-[600px] flex flex-col justify-between p-4  rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-900 ${(show)?'max-sm:hidden':''} `} >
       <div className="bg-white text-black rounded-xl p-2 text-center flex items-center justify-between ">
-        <FontAwesomeIcon className='text-2xl min-sm:invisible' icon={faArrowLeft} onClick={()=>setshow(true)}></FontAwesomeIcon>
+        <FontAwesomeIcon className='text-2xl min-sm:invisible' icon={faArrowLeft} onClick={()=>setshow(true)+setid(0)}></FontAwesomeIcon>
         <p className='text-2xl font-medium'>{uname}</p>
         <p></p>
       </div>
