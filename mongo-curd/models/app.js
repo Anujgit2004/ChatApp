@@ -101,9 +101,9 @@ await chat.messages.push(Chatmessage._id);
 }
 await chat.save();
 await Chatmessage.save().then(()=>console.log(Chatmessage));
-
+socket.emit("private message",Chatmessage);
 io.to(data.getid).emit("private message",Chatmessage);
-socket.emit("private message",Chatmessage)
+
 
   })
 })
