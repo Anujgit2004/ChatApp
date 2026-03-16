@@ -39,7 +39,7 @@ socket.on("private message",(msg)=>{
   setchat(prev=>[...prev,msg])
 })
  return()=>{
-  socket.off("private message",msg);
+  socket.off("private message");
  };
 },[]);
 
