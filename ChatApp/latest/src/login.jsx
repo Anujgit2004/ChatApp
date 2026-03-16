@@ -36,6 +36,11 @@ setTimeout(async() => {
 let token=await response.json();
 if(token.message){
   alert("Invalid Credentials")
+  setdata({
+      email:"",
+        password:""
+  })
+  setactive(true)
 }
 else{
   setUname(token.name.name)
@@ -56,9 +61,9 @@ console.log(active)
 }
   return (
     <>
-    <div className="loginpage w-full h-screen flex flex-col items-center justify-center gap-10 bg-gradient-to-r from-amber-500 to-pink-500">
-      <img src={chatlogo} className='w-28 max-lg:w-14' />
-      <div className="insideframe max-lg:w-4/6 max-sm:w-5/6 flex flex-col items-center gap-5 p-5 bg-gradient-to-r from-rose-400 to-red-300 rounded-3xl">
+    <div className="loginpage w-full h-screen flex flex-col items-center  gap-10 bg-gradient-to-r from-amber-500 to-pink-500">
+      <img src={chatlogo} className='w-20 max-lg:w-14 mt-5' />
+      <div className="insideframe  max-lg:w-4/6 max-sm:w-5/6 flex flex-col items-center gap-5 p-5 bg-gradient-to-r from-rose-400 to-red-300 rounded-3xl">
   <h1 className='text-4xl max-md:text-3xl max-sm:text-xl'>Login Page</h1>
  <form onSubmit={handleSubmit} className='w-2xl max-md:w-lg max-sm:w-xs flex flex-col items-center gap-6 p-5 rounded-2xl'>
   <input className='border-2 w-3/6 max-md:w-4/6 max-sm:w-5/6 p-1 rounded-xl text-xl' type="email" name='email' placeholder='Email' value={data.email} onChange={handlefield}/>
@@ -71,7 +76,7 @@ console.log(active)
 </div>
 
       </div>
-       <Link to={'/'}> <button className='cursor-pointer text-2xl max-lg:text-xl max-sm:text-lg p-2 rounded-xl text-white bg-black'>Go To Homepage</button></Link>
+       <Link to={'/'}> <button className='cursor-pointer text-2xl max-lg:text-xl mb-10 max-sm:text-lg p-2 rounded-xl text-white bg-black'>Go To Homepage</button></Link>
     </div>
      
     </>

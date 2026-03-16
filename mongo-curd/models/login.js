@@ -14,6 +14,17 @@ cloudinary.config({
     api_key:'522185749274895',
     api_secret:'R_c4X53uBSlTyE4ELktLOJgv98Q'
 })
+
+
+const picupload=(req,res)=>{ 
+let fileU=req.files.image;
+cloudinary.uploader.upload(fileU.tempFilePath,async(err,result)=>{
+console.log(result)
+res.send(result.url)
+})
+
+}
+
 //login api
 const userlogin=async(req,res)=>{
 console.log(req)
@@ -36,11 +47,8 @@ console.log(getuser)
 //signup api
 const createuser=async(req,res)=>{
      try{
-let {name,email,password}=req.body;
-
-
-
-let getdata=await Userdata.findOne({email}) 
+let {name,email,password,image}=req.body;
+    let getdata=await Userdata.findOne({email}) 
 if(getdata?.email==email){
  res.json({message:"Registerd UnSuccessful"})
 }
@@ -50,7 +58,7 @@ const finaluser=new Userdata({
     name,
     email,
     password:hashpass,
-
+image,
     role:"customer"
 })
 finaluser.save().then(async ()=>{
@@ -60,6 +68,7 @@ finaluser.save().then(async ()=>{
  console.log(getuser)
 })
 }
+ 
     }
     catch(err){
 console.log(err)
@@ -109,37 +118,7 @@ res.send(er)
 }
 
 // SendMessage api
-const sendMessage=async(req,res)=>{
-let {message}=req.body;
-console.log(req)
- let query= req.params  
-let RecieverId=query.id;
-let SenderId=query.ids;
-let chat= await Convers.findOne({
-    participants:{$all:[SenderId,RecieverId]}
-});
 
-if(!chat){
-  chat=await new Convers({
-        participants:[SenderId,RecieverId]
-    })
-}
-
-let Chatmessage=new Message({
-    SenderId,
-    RecieverId,
-    message,
-    ConversationId:chat._id
-})
-res.send(Chatmessage)
-if(Chatmessage){
-await chat.messages.push(Chatmessage._id);
-}
-await chat.save();
-await Chatmessage.save().then(()=>console.log(Chatmessage));
-
-console.log(getuser)
-}
 
 
 //Recieve api
@@ -161,4 +140,4 @@ res.send(getmessages.messages);
 
 }
 
-module.exports={userlogin,createuser,getprint,recieveMessage,currentchatters,sendMessage};
+module.exports={userlogin,createuser,getprint,recieveMessage,currentchatters,picupload};

@@ -10,24 +10,27 @@ const Adminaccess = require("./admin");
 let cors=require("cors");
 const { Message } = require("./MessageSchema");
 const { Convers } = require("./Conversation");
+const fileUpload = require("express-fileupload");
 let app=express();
 let frontendurl="http://localhost:5173"
 app.use(cors({
   origin:frontendurl,
   methods:['GET','POST']
-}));
+})); 
 app.use(express.json()); 
+app.use(fileUpload({
+  useTempFiles:true
+}))
+//socket.io connection--> 
 
-//socket.io connection-->
-
-// const server=http.createServer(app)
-// const io=new Server(server,{
-//     cors:{
-//         origin:'http://localhost:5173',
-//         methods:['GET','POST'],
-//         credentials:true
-//     }
-// });
+const server=http.createServer(app)
+const io=new Server(server,{
+    cors:{
+        origin:frontendurl,
+        methods:['GET','POST'],
+        credentials:true
+    }
+});
 
 let uri=process.env.URI;
 const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
@@ -42,7 +45,7 @@ async function run() {
   catch(err){
     console.log(err)
   }
-}
+} 
 run().catch(console.dir);
 
 
@@ -54,83 +57,58 @@ app.use("/user",route);
 app.use("/auth",route)
 
 
-//socket.io connection-->
-// let users={};
-// io.on("connection",(socket)=>{
-
-// socket.on('register',(userid)=>{
-// users[userid]=socket.id;
-//     });
-
-
-
-//   socket.on('private_message',async(data)=>{
-//     console.log('next')
-//     console.log(data.senderid)
-//     console.log(data.getid)
-    
-//    let chat= await Convers.findOne({
-//     participants:{$all:[data.senderid,data.getid]}
-// });
-//  console.log('hello')
-// if(!chat){
-//   chat=await Convers({
-//         participants:[data.senderid,data.getid]
-//     })
-// }
-// console.log(chat._id)
-// let Chatmessage=await Message({
-//     SenderId:data.senderid,
-//     RecieverId:data.getid,
-//     message:data.datas,
-//     ConversationId:chat._id
-// })
-// if(Chatmessage){
-// await chat.messages.push(Chatmessage._id);
-// }
-// await chat.save();
-// await Chatmessage.save().then(()=>console.log(Chatmessage));
+//socket io to send message
+io.on("connection",(socket)=>{
+  socket.on("join",(userid)=>{
+    socket.userid=userid;
+    socket.join(userid);
+    console.log(socket.id,userid)
+  });
 
 
-// const recieversocketid=users[data.getid];
+socket.on("Delete",async(user)=>{
+let getmsg=await Message.findOne({_id:user.ids});
+await getmsg.deletedFor.push(user.senderid);
+await getmsg.save();
+let getmessages=await Convers.findOne({
+   participants:{$all:[user.getid,user.senderid]}
+}).populate("messages")
+
+socket.emit("loadmessage",(getmessages.messages))
+})
 
 
-// socket.emit('recieve_msg',Chatmessage)
+  socket.on("private message",async(data)=>{
+    let chat= await Convers.findOne({
+    participants:{$all:[data.senderid,data.getid]}
+});
 
-// if(recieversocketid){
-//   io.to(recieversocketid).emit('recieve_msg',Chatmessage)
-   
-// }
-//   })  
-// })
+if(!chat){
+  chat=await new Convers({
+        participants:[data.senderid,data.getid]
+    })
+}
 
+let Chatmessage=new Message({
+   SenderId:data.senderid,
+   RecieverId:data.getid,
+   message:data.datas.message,
+    ConversationId:chat._id,
+})
 
+if(Chatmessage){
+await chat.messages.push(Chatmessage._id);
+}
+await chat.save();
+await Chatmessage.save().then(()=>console.log(Chatmessage));
 
+io.to(data.getid).emit("private message",Chatmessage);
+socket.emit("private message",Chatmessage)
 
-
- app.listen(8000);
-
-//  const io=require('socket.io')(server,{
-//   cors:{
-//     origin:frontendurl
-//   }
-// });
+  })
+})
 
 
 
+ server.listen(8000);
 
-// io.on('connection',(socket)=>{
-//   console.log('connected to socket.io');
-
-//   socket.on('setup',(userData)=>{
-//     socket.join(userData);
-//     console.log(userData);
-//     console.log('connected');
-//   })
-
-//     socket.on('join chat',(room)=>{
-//     socket.join(room);
-//     console.log('user joined '+room);
-   
-//   })
-// })

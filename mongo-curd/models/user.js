@@ -13,13 +13,13 @@ password:{
     type:String,
     required:true, 
 },
-profile:{
+image:{
     type:String,
-  default:''
+required:true
 },
 role:{
  type:String,
-required:true, 
+default:''
 }
 })
 
