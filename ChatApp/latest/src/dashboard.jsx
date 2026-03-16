@@ -38,9 +38,9 @@ useEffect(()=>{
 socket.on("private message",(msg)=>{
   setchat(prev=>[...prev,msg])
 })
- return()=>{
-  socket.off("private message",msg);
- };
+ // return()=>{
+ //  socket.off("private message",msg);
+ // };
 },[]);
 
 useEffect(()=>{
